@@ -8,7 +8,7 @@ const STOCKS = [
   { ticker: "KMI", quantity: 15 },
 ];
 
-const BASE_URL = "https://financialmodelingprep.com/api/v3/";
+const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
 const RESOURCES = {
   API_ERROR_TEXT:"Error occured. Please try again.",

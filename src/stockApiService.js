@@ -57,7 +57,7 @@ const getCompanyHighLowPrices = async (ticker) => {
     }`;
     let startDate = "2019-01-01";
     const response = await axios.get(
-      `${BASE_URL}historical-price-full/${ticker}?from=${startDate}&to=${endDate}&apikey=${process.env.API_KEY}`
+      `${BASE_URL}/historical-price-full/${ticker}?from=${startDate}&to=${endDate}&apikey=${process.env.API_KEY}`
     );
     if (response.status == 200) {
       let high = 0;
@@ -85,7 +85,7 @@ const getCompanyCurrentPrice = async (ticker) => {
   let result;
   try {
     const response = await axios.get(
-      `${BASE_URL}quote/${ticker}?apikey=${process.env.API_KEY}`
+      `${BASE_URL}/quote/${ticker}?apikey=${process.env.API_KEY}`
     );
     if (response.status == 200) {
       result = response.data[0].price;
