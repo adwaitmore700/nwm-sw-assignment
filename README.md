@@ -52,7 +52,7 @@ The test framework used here is Jest (For more info : https://jestjs.io/docs/get
       - stockApiService.test.js
       - utilFunctions.test.js
     - index.test.js
-  - output                                                      ( Output generated in this folder )
+  - output                                                      ( Output generated in this folder. Folder will be created locally )
     - portfolio.csv
   - src                                                         ( Main functionality driven files in this folder )
     - constant.js
