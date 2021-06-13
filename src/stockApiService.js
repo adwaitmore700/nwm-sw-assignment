@@ -94,7 +94,9 @@ const getCompanyCurrentPrice = async (ticker) => {
       response.data &&
       Array.isArray(response.data)
     ) {
-      result = response.data[0].price;
+      if (response.data[0].price) {
+        result = response.data[0].price;
+      }
     }
   } catch (error) {
     //Throw an error that will be caught by its caller try-catch block.
