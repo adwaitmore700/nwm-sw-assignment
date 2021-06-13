@@ -1,16 +1,17 @@
-const fs = require('fs');
+const fs = require("fs");
 const createCsvWriter = require("csv-writer").createObjectCsvWriter;
-
+const { RESOURCES } = require("./constants");
 /*
   This util function generates a CSV file in the project folder
   @dataList - List of the data (the selected stocks with their total) that needs to be mapped to the CSV file
   @return operation status : Boolean
 */
 const generateCSVOutput = async (dataList) => {
-    if(!fs.existsSync('output')){
-      fs.mkdirSync('output');
-    }
-    if(dataList && dataList.length > 0){
+  try {
+    if (dataList && Array.isArray(dataList) && dataList.length > 0) {
+      if (!fs.existsSync("output")) {
+        fs.mkdirSync("output");
+      }
       const csvWriter = createCsvWriter({
         path: "output/portfolio.csv",
         header: [
@@ -22,10 +23,18 @@ const generateCSVOutput = async (dataList) => {
           { id: "currentValue", title: "Current Value" },
         ],
       });
-      await csvWriter.writeRecords(dataList);
-      return true;
+      try {
+        await csvWriter.writeRecords(dataList);
+        console.log(RESOURCES.CSV_SUCCESS_TEXT);
+      } catch (error) {
+        throw new Error(RESOURCES.CSV_GENERATION_ERROR_TEXT);
+      }
+    } else {
+      throw new Error(RESOURCES.CSV_GENERATION_ERROR_TEXT);
     }
-    return false;
-  };
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
 
-module.exports = generateCSVOutput;
+module.exports = { generateCSVOutput };

@@ -11,8 +11,11 @@ const STOCKS = [
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
 
 const RESOURCES = {
+  OPERATION_SUCCESSFUL_TEXT:"Operation successfully completed. Please check the output folder.",
   API_ERROR_TEXT:"Error occured. Please try again.",
-  CSV_SUCCESS_TEXT:"CSV File generated successfully. Please check the output folder.",
+  API_BLANK_DATA_ERROR_TEXT:"No results found.",
+  INVALID_DATA:"Invalid data",
+  CSV_SUCCESS_TEXT:"CSV File generated successfully",
   CSV_GENERATION_ERROR_TEXT :"Error occurred while generating the CSV output file.",
   TICKER_HEADER:"Ticker",
   QUANTITY_HEADER:"Quantity",

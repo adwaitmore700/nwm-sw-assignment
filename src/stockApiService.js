@@ -4,7 +4,7 @@
 
 const { default: axios } = require("axios");
 const { BASE_URL, RESOURCES } = require("./constants");
-const generateCSVOutput = require("./utilFunctions");
+const { generateCSVOutput } = require("./utilFunctions");
 
 /*
   Gets the Stock Market Portfolio of the person
@@ -13,33 +13,34 @@ const generateCSVOutput = require("./utilFunctions");
 */
 const getStockMarketPortfolio = async (stockList) => {
   try {
-    let output = [];
-    for (let i = 0; i < stockList.length; i++) {
-      let stock = stockList[i];
-      let currentPrice = await getCompanyCurrentPrice(stock.ticker);
-      let highLowPrice = await getCompanyHighLowPrices(stock.ticker);
-      if (currentPrice && highLowPrice) {
-        let resultStock = {
-          ticker: stock.ticker,
-          quantity: stock.quantity,
-          currentPrice: `$${currentPrice}`,
-          high: `$${highLowPrice.high}`,
-          low: `$${highLowPrice.low}`,
-          currentValue: (stock.quantity * currentPrice).toFixed(2),
-        };
-        output.push(resultStock);
-      } else {
-        console.log(RESOURCES.API_ERROR_TEXT);
+    if (stockList.length > 0) {
+      let output = [];
+      for (let i = 0; i < stockList.length; i++) {
+        let stock = stockList[i];
+        let currentPrice = await getCompanyCurrentPrice(stock.ticker);
+        let highLowPrice = await getCompanyHighLowPrices(stock.ticker);
+        if (currentPrice && highLowPrice) {
+          let resultStock = {
+            ticker: stock.ticker,
+            quantity: stock.quantity,
+            currentPrice: `$${currentPrice}`,
+            high: `$${highLowPrice.high}`,
+            low: `$${highLowPrice.low}`,
+            currentValue: (stock.quantity * currentPrice).toFixed(2),
+          };
+          output.push(resultStock);
+        } else {
+          throw new Error(RESOURCES.API_BLANK_DATA_ERROR_TEXT);
+        }
       }
-    }
-    output.push(calculateTotal(output));
-    if (await generateCSVOutput(output)) {
-      console.log(RESOURCES.CSV_SUCCESS_TEXT);
+      output.push(calculateTotal(output));
+      await generateCSVOutput(output);
+      console.log(RESOURCES.OPERATION_SUCCESSFUL_TEXT);
     } else {
-      console.log(RESOURCES.CSV_GENERATION_ERROR_TEXT);
+      console.log(RESOURCES.INVALID_DATA);
     }
   } catch (error) {
-    console.log(error);
+    console.log(error.message);
   }
 };
 
@@ -59,7 +60,7 @@ const getCompanyHighLowPrices = async (ticker) => {
     const response = await axios.get(
       `${BASE_URL}/historical-price-full/${ticker}?from=${startDate}&to=${endDate}&apikey=${process.env.API_KEY}`
     );
-    if (response.status == 200) {
+    if (response.status == 200 && response.data["historical"]) {
       let high = 0;
       let low = Number.MAX_VALUE;
       response.data.historical.forEach((item) => {
@@ -71,7 +72,8 @@ const getCompanyHighLowPrices = async (ticker) => {
   } catch (error) {
     //Throw an error that will be caught by its caller try-catch block.
     //Error will occur if there is a network failure, or api failure
-    throw new Error(`${RESOURCES.API_ERROR_TEXT} --- ${JSON.stringify(error)}`);
+    console.log(error.message);
+    throw new Error(RESOURCES.API_ERROR_TEXT);
   }
   return result;
 };
@@ -87,13 +89,18 @@ const getCompanyCurrentPrice = async (ticker) => {
     const response = await axios.get(
       `${BASE_URL}/quote/${ticker}?apikey=${process.env.API_KEY}`
     );
-    if (response.status == 200) {
+    if (
+      response.status == 200 &&
+      response.data &&
+      Array.isArray(response.data)
+    ) {
       result = response.data[0].price;
     }
   } catch (error) {
     //Throw an error that will be caught by its caller try-catch block.
     //Error will occur if there is a network failure, or api failure
-    throw new Error(`${RESOURCES.API_ERROR_TEXT} --- ${JSON.stringify(error)}`);
+    console.log(error.message);
+    throw new Error(RESOURCES.API_ERROR_TEXT);
   }
   return result;
 };
@@ -113,4 +120,9 @@ const calculateTotal = (data) => {
   return total;
 };
 
-module.exports = getStockMarketPortfolio;
+module.exports = {
+  getStockMarketPortfolio,
+  getCompanyCurrentPrice,
+  getCompanyHighLowPrices,
+  calculateTotal,
+};

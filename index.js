@@ -2,9 +2,9 @@
     This file is the start of the application
 */
 
-const dotenv = require('dotenv');
-const getStockMarketPortfolio = require('./src/stockApiService');
-const {STOCKS} = require('./src/constants');
+const dotenv = require("dotenv");
+const { getStockMarketPortfolio } = require("./src/stockApiService");
+const { STOCKS } = require("./src/constants");
 
 //loading the .env file and setting the config
 dotenv.config();
