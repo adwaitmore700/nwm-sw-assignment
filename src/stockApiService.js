@@ -92,7 +92,8 @@ const getCompanyCurrentPrice = async (ticker) => {
     if (
       response.status == 200 &&
       response.data &&
-      Array.isArray(response.data)
+      Array.isArray(response.data) &&
+      response.data.length > 0
     ) {
       if (response.data[0].price) {
         result = response.data[0].price;
