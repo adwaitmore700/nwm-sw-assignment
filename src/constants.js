@@ -4,8 +4,8 @@
 
 const STOCKS = [
   { ticker: "AAPL", quantity: 5 },
-  { ticker: "SPY", quantity: 10 },
-  { ticker: "KMI", quantity: 15 },
+  { ticker: "AMZN", quantity: 10 },
+  { ticker: "TSLA", quantity: 15 },
 ];
 
 const BASE_URL = "https://financialmodelingprep.com/api/v3";
