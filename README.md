@@ -21,7 +21,8 @@ Output is generated in the form of a CSV file
 ### Using NPM
 
     $ npm install
-    
+
+#
 # Running the project
 
 ## Getting the API key
@@ -42,6 +43,7 @@ Output is generated in the form of a CSV file
 
     $ npm start
 
+#
 # Testing
 
 The test framework used here is Jest (For more info : https://jestjs.io/docs/getting-started)
@@ -54,6 +56,18 @@ The test framework used here is Jest (For more info : https://jestjs.io/docs/get
 
     $ npm test
 
+#
+# Generated Output
+
+### The output is stored in a .csv file. The output looks as follows :
+
+    Ticker,Quantity,Current Price,High,Low,Current Value
+    AAPL,5,$127.35,$145.09,$35.50,$636.75
+    AMZN,10,$3346.83,$3553.39,$1460.93,$33468.30
+    TSLA,15,$609.89,$900.40,$35.40,$9148.35
+    Total,,,,,$43253.40
+
+#
 # Project Structure
  
 - Root
@@ -71,6 +85,7 @@ The test framework used here is Jest (For more info : https://jestjs.io/docs/get
   - .env.example                                                ( Example to consume environment variables )
   - index.js                                                    ( Starting point of the script )
 
+#
 # Additional Information
 
 ### The script runs on three stocks at the moment. These stocks are hardcoded values. You can change these hardcoded values as per your requirements. They are located in the constants.js file. You can add as many stocks as you want and get the stock portfolio generated. Also, the high and low prices of the stocks are calculated wthin a certain period of time which is hardcoded in the stockApiService.js file in the api function call. You can also change that value. Make sure that the time period doesn't exceed 10 years as the API only provides data for the past 10 years.
